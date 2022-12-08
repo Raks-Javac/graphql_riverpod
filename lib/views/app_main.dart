@@ -9,18 +9,22 @@ class ShowAppResultView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(futureProviderMusic);
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ref.watch(futureProviderMusic).when(data: (data) {
-            return Text(data.toString());
-          }, error: (error, stackTrace) {
-            print(error.toString());
-            return Text(error.toString());
-          }, loading: () {
-            return const CircularProgressIndicator();
-          }),
-        ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ref.watch(futureProviderMusic).when(data: (data) {
+                return Text(data.toString());
+              }, error: (error, stackTrace) {
+                print(error.toString());
+                return const CircularProgressIndicator();
+              }, loading: () {
+                return const CircularProgressIndicator();
+              }),
+            ],
+          ),
+        ),
       ),
     );
   }

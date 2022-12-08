@@ -17,22 +17,23 @@ class MockShopifyRepo implements ShopifyRepo {
 
   @override
   Future getShopifyMusic() async {
-    final response = await clientApiService.queryData(r'''
-      query getArtists($name: String!) {
-          queryArtists(byName: $name) {
-              name
-              id
-              image
-              albums {
-                id
-                name
-              }
-          }
-      }
-    ''', paramters: {
-      'name': 'asake',
-    });
-    print(response.toString());
-    return null;
+    final response = await clientApiService.queryData(
+      r'''
+query ExampleQuery {
+  continents {
+    code
+  }
+  countries {
+    code
+  }
+  languages {
+    code
+  }
+}
+
+  ''',
+    );
+
+    return response;
   }
 }

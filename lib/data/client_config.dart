@@ -1,12 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
 
-final appClientConfigProvider = Provider<AppClientConfig>((ref) {
-  return AppClientConfig();
+final appClientConfigProvider =
+    Provider.family<AppClientConfig, HiveStore>((ref, hiveStore) {
+  return AppClientConfig(hiveStore);
 });
 
 class AppClientConfig {
-  static const String baseUrl = 'https://api.github.com/graphql';
+  final HiveStore store;
+  AppClientConfig(this.store);
+  static const String baseUrl = 'https://countries.trevorblades.com/graphql';
 
   HttpLink get httpLink => HttpLink(baseUrl);
   final AuthLink authLink = AuthLink(
@@ -19,6 +22,7 @@ class AppClientConfig {
   GraphQLClient get client => GraphQLClient(
         link: httpLink,
         // The default store is the InMemoryStore, which does NOT persist to disk
-        cache: GraphQLCache(store: HiveStore()),
+        cache: GraphQLCache(store: store),
+        // cache: GraphQLCache(store: HiveStore()),
       );
 }
